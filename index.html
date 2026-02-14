@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💌 For Mariah 💌</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff6a88, #ff99ac);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
+
+/* Envelope */
+.envelope {
+    width: 320px;
+    height: 200px;
+    background: #fff;
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #ff4d6d;
+    clip-path: polygon(0 0, 50% 60%, 100% 0);
+    transform-origin: top;
+    transition: transform 1s;
+    z-index: 3;
+}
+
+.envelope.open .flap {
+    transform: rotateX(180deg);
+}
+
+.envelope-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    color: #ff4d6d;
+    z-index: 1;
+}
+
+/* Card */
+.card {
+    display: none;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 5;
+}
+
+h1 {
+    color: #ff4d6d;
+}
+
+/* Buttons */
+.buttons {
+    margin-top: 30px;
+    position: relative;
+    height: 60px;
+}
+
+button {
+    padding: 12px 24px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+    left: 30%;
+}
+
+#noBtn {
+    background: #ddd;
+    left: 55%;
+}
+
+/* Gold Note */
+.note {
+    display: none;
+    margin-top: 20px;
+    padding: 25px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, gold, #fff2a8, gold);
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 10px gold; }
+    to { box-shadow: 0 0 25px gold; }
+}
+
+/* Hearts */
+.heart {
+    position: fixed;
+    font-size: 18px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    font-size: 20px;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    from { transform: translateY(-10vh) rotate(0deg); }
+    to { transform: translateY(100vh) rotate(720deg); }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/audio/2022/02/23/audio_6c8d1c2b60.mp3">
+</audio>
+
+<div class="envelope" id="envelope">
+    <div class="flap"></div>
+    <div class="envelope-text">💌 Tap to Open 💌</div>
+</div>
+
+<div class="card" id="card">
+    <h1>❤️ Mariah ❤️<br>Will you be my Valentine?</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes 💖</button>
+        <button id="noBtn">No 🙈</button>
+    </div>
+
+    <div class="note" id="note">
+        <p>
+            Hi baby 😊❤️
+
+So here we are, sitting on the moon in my mind, just the two of us, watching the stars ✨
+Each one holds a moment we’ve shared, and even from a distance, they matter and are deeply cherished.
+
+I don’t need a special day to remind you how loved you are 
+but if Valentine’s Day is about celebrating something beautiful, then today is for you.
+
+I may not be able to do this in person,
+but this comes from all of my heart 💜
+
+I love you, baby 😘
+            Happy Valentine’s Day ❤️
+        </p>
+    </div>
+</div>
+
+<script>
+const envelope = document.getElementById("envelope");
+const card = document.getElementById("card");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const note = document.getElementById("note");
+const music = document.getElementById("music");
+
+envelope.onclick = () => {
+    envelope.classList.add("open");
+    setTimeout(() => {
+        envelope.style.display = "none";
+        card.style.display = "block";
+    }, 1000);
+};
+
+yesBtn.onclick = () => {
+    note.style.display = "block";
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+    music.play();
+    confetti();
+};
+
+noBtn.onmouseover = moveNo;
+noBtn.ontouchstart = moveNo;
+
+function moveNo() {
+    noBtn.style.transform = `translate(${Math.random()*200-100}px, ${Math.random()*100-50}px)`;
+}
+
+setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = Math.random() > 0.5 ? "❤️" : "🤍";
+    h.style.left = Math.random()*100 + "vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+},400);
+
+function confetti() {
+    for(let i=0;i<30;i++){
+        const c=document.createElement("div");
+        c.className="confetti";
+        c.innerHTML="❤️";
+        c.style.left=Math.random()*100+"vw";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),3000);
+    }
+}
+</script>
+
+</body>
+</html>
